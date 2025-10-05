@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TimelyWatches - Premium Watches Online</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff;
+      color: #000;
+    }
+    #sale-banner {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 12px 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      position: sticky;
+      top: 0;
+      z-index: 1200;
+    }
+    header {
+      background-color: #000;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 40px;
+      z-index: 1100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    #brand-name {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      user-select: none;
+      pointer-events: none;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    #cart-icon {
+      cursor: pointer;
+      font-size: 1.8rem;
+      color: white;
+      position: relative;
+      z-index: 1110;
+    }
+    #cart-count {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background: #fff;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+      user-select: none;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 40px auto 100px;
+      padding: 0 20px;
+    }
+
+    h2.section-title {
+      color: #000;
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #000;
+      display: inline-block;
+      padding-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .category-section {
+      margin-bottom: 50px;
+    }
+    .products-row {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: #888 #eee;
+    }
+    .products-row::-webkit-scrollbar {
+      height: 8px;
+    }
+    .products-row::-webkit-scrollbar-track {
+      background: #eee;
+      border-radius: 4px;
+    }
+    .products-row::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+    .product-card {
+      background: #fff;
+      border: 2px solid #000;
+      border-radius: 10px;
+      flex: 0 0 220px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      border-color: #555;
+    }
+    .product-img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-bottom: 2px solid #000;
+    }
+    .product-info {
+      flex-grow: 1;
+      padding: 15px 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: #000;
+      min-height: 42px;
+    }
+    .product-price {
+      color: #000;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+    .btn-add {
+      background-color: #000;
+      border: none;
+      color: white;
+      padding: 10px 0;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    .btn-add:hover {
+      background-color: #222;
+    }
+    #cart-sidebar {
+      position: fixed;
+      top: 70px;
+      right: -400px;
+      width: 400px;
+      height: calc(100vh - 70px);
+      background-color: #fff;
+      box-shadow: -5px 0 30px rgba(0,0,0,0.3);
+      padding: 25px 25px 20px;
+      overflow-y: auto;
+      transition: right 0.3s ease;
+      z-index: 1150;
+      display: flex;
+      flex-direction: column;
+    }
+    #cart-sidebar.open {
+      right: 0;
+    }
+    #cart-sidebar h2 {
+      color: #000;
+      margin-top: 0;
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 8px;
+    }
+    #cart-items {
+      flex-grow: 1;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+      overflow-y: auto;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      color: #000;
+    }
+    .cart-item-name {
+      font-weight: 600;
+      flex: 1;
+      margin-right: 10px;
+      min-width: 90px;
+    }
+    .cart-item-qty {
+      margin: 0 10px;
+      font-weight: 600;
+      color: #222;
+    }
+    .cart-item-price {
+      font-weight: 700;
+      color: #000;
+      min-width: 80px;
+      text-align: right;
+    }
+    .cart-item-remove {
+      color: #b00020;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.4rem;
+      padding-left: 10px;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    .cart-item-remove:hover {
+      color: #7a0015;
+    }
+    #cart-total {
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-align: right;
+      margin-bottom: 15px;
+      border-top: 2px solid #000;
+      padding-top: 15px;
+      color: #000;
+    }
+    #cart-discount {
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-align: right;
+      margin-bottom: 20px;
+      color: #b00020;
+    }
+    #payment-section {
+      border-top: 2px solid #000;
+      padding-top: 15px;
+    }
+    #payment-section h3 {
+      margin: 0 0 15px 0;
+      color: #000;
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+    .payment-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    label.payment-option {
+      background: #f5f5f5;
+      padding: 12px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #000;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    label.payment-option:hover {
+      border-color: #000;
+      background: #e0e0e0;
+    }
+    input[type="radio"] {
+      transform: scale(1.3);
+      cursor: pointer;
+    }
+    #btn-pay {
+      margin-top: 18px;
+      background-color: #000;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      letter-spacing: 1px;
+    }
+    #btn-pay:hover {
+      background-color: #222;
+    }
+    #address-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1300;
+    }
+    #address-modal.open {
+      display: flex;
+    }
+    #address-form {
+      background: #fff;
+      padding: 30px 30px 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      color: #000;
+    }
+    #address-form h2 {
+      margin-top: 0;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #address-form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    #address-form input, #address-form textarea {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 15px;
+      border: 2px solid #000;
+      border-radius: 6px;
+      font-size: 1rem;
+      resize: vertical;
+      color: #000;
+    }
+    #address-form button {
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+    #address-form button:hover {
+      background-color: #222;
+    }
+    @media (max-width: 900px) {
+      header {
+        padding: 10px 15px;
+      }
+      #brand-name {
+        position: static;
+        transform: none;
+        text-align: center;
+        width: 100%;
+        pointer-events: auto;
+      }
+      #cart-sidebar {
+        width: 100vw;
+        right: -100vw;
+        top: 110px;
+        height: calc(100vh - 110px);
+      }
+      #cart-sidebar.open {
+        right: 0;
+      }
+      main {
+        margin: 30px 10px 100px;
+      }
+    }
+#rotating-discount {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffcc00;
+  height: 1.2rem;
+  overflow: hidden;
+  position: relative;
+  margin-top: 4px;
+}
+#rotating-discount .discount-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  animation: rotateText 8s linear infinite;
+  opacity: 0;
+}
+#rotating-discount .discount-text:nth-child(1) { animation-delay: 0s; }
+#rotating-discount .discount-text:nth-child(2) { animation-delay: 2s; }
+#rotating-discount .discount-text:nth-child(3) { animation-delay: 4s; }
+#rotating-discount .discount-text:nth-child(4) { animation-delay: 6s; }
+@keyframes rotateText {
+  0% { opacity: 1; }
+  24.9% { opacity: 1; }
+  25% { opacity: 0; }
+  100% { opacity: 0; }
+}
+</style>
+</head>
+<body>
+  <div id="sale-banner" style="display:none;">
+    Summer Sale! Flat 50% OFF on selected watches — 21 May to 10 June
+  </div>
+  <header>
+    <div style="display:flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
+      <div id="brand-name">TimelyWatches</div>
+      <div id="rotating-discount">
+        <span class="discount-text">Summer Sale 50% OFF!</span>
+        <span class="discount-text">Only till 10 June!</span>
+        <span class="discount-text">Selected Watches Discounted!</span>
+        <span class="discount-text">Don't Miss Out!</span>
+      </div>
+    </div>
+    <div id="cart-icon" title="View Cart">🛒<span id="cart-count" style="display:none;">0</span></div>
+  </header>
+  <main>
+    <section class="category-section" id="kids-watches">
+      <h2 class="section-title">Kids Watches</h2>
+      <div class="products-row" id="kids-row"></div>
+    </section>
+    <section class="category-section" id="men-watches">
+      <h2 class="section-title">Men Watches</h2>
+      <div class="products-row" id="men-row"></div>
+    </section>
+    <section class="category-section" id="women-watches">
+      <h2 class="section-title">Women Watches</h2>
+      <div class="products-row" id="women-row"></div>
+    </section>
+    <section class="category-section" id="luxury-watches">
+      <h2 class="section-title">Luxury Watches (Coming Soon)</h2>
+      <div class="products-row">
+        <div class="product-card">
+            <img class="product-img" src="L-1.jpeg" alt="Rolex Submariner" />
+          <div class="product-img" style="display:flex;align-items:center;justify-content:center;background:#f5f5f5;height:150px;">Coming Soon</div>
+          <div class="product-info">
+            <div class="product-name">Luxury Watch </div>
+            <div class="product-price">—</div>
+            <button class="btn-add" disabled>Coming Soon</button>
+          </div>
+        </div>
+        <div class="product-card">
+            <img class="product-img" src="L2.jpeg" alt="Rolex Submariner" />
+          <div class="product-img" style="display:flex;align-items:center;justify-content:center;background:#f5f5f5;height:150px;">Coming Soon</div>
+          <div class="product-info">
+            <div class="product-name">Luxury Watch B</div>
+            <div class="product-price">—</div>
+            <button class="btn-add" disabled>Coming Soon</button>
+          </div>
+        </div>
+        <div class="product-card">
+             <img class="product-img" src="L3.jpeg" alt="Rolex Submariner" />
+          <div class="product-img" style="display:flex;align-items:center;justify-content:center;background:#f5f5f5;height:150px;">Coming Soon</div>
+          <div class="product-info">
+            <div class="product-name">Luxury Watch C</div>
+            <div class="product-price">—</div>
+            <button class="btn-add" disabled>Coming Soon</button>
+          </div>
+        </div>
+        <div class="product-card">
+             <img class="product-img" src="L4.jpeg" alt="Rolex Submariner" />
+          <div class="product-img" style="display:flex;align-items:center;justify-content:center;background:#f5f5f5;height:150px;">Coming Soon</div>
+          <div class="product-info">
+            <div class="product-name">Luxury Watch D</div>
+            <div class="product-price">—</div>
+            <button class="btn-add" disabled>Coming Soon</button>
+          </div>
+        </div>
+        <div class="product-card">
+             <img class="product-img" src="L5.jpeg" alt="Rolex Submariner" />
+          <div class="product-img" style="display:flex;align-items:center;justify-content:center;background:#f5f5f5;height:150px;">Coming Soon</div>
+          <div class="product-info">
+            <div class="product-name">Luxury Watch E</div>
+            <div class="product-price">—</div>
+            <button class="btn-add" disabled>Coming Soon</button>
+          </div>
+        </div>
+      </div>
+    </section>
+</main>
+  <aside id="cart-sidebar" aria-label="Shopping Cart">
+    <h2>Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <div id="cart-discount"></div>
+    <div id="cart-total">Total: ₹0.00</div>
+    <section id="payment-section" style="display:none;">
+      <h3>Select Payment Method</h3>
+      <form id="payment-form">
+        <div class="payment-methods">
+          <label class="payment-option">
+            <input type="radio" name="payment" value="Credit Card" required />
+            Credit Card
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="UPI" required />
+            UPI
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="Net Banking" required />
+            Net Banking
+          </label>
+        </div>
+        <button type="submit" id="btn-pay">Proceed to Shipping</button>
+      </form>
+    </section>
+  </aside>
+  <div id="address-modal" role="dialog" aria-modal="true" aria-labelledby="address-title">
+    <form id="address-form">
+      <h2 id="address-title">Enter Shipping Address</h2>
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Your full name" required />
+      <label for="address">Address</label>
+      <textarea id="address" name="address" rows="3" placeholder="Street, area, city, state" required></textarea>
+      <label for="pin">PIN Code</label>
+      <input type="text" id="pin" name="pin" placeholder="e.g. 110001" pattern="\d{6}" title="6 digit PIN code" required />
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="10-digit mobile number" pattern="[0-9]{10}" title="10-digit phone number" required />
+      <button type="submit">Confirm Order</button>
+    </form>
+  </div>
+<script>
+  const summerSaleStart = new Date('2025-05-21');
+  const summerSaleEnd = new Date('2025-06-10');
+  const today = new Date();
+  const isSaleActive = today >= summerSaleStart && today <= summerSaleEnd;
+  if (isSaleActive) {
+    document.getElementById('sale-banner').style.display = 'block';
+  }
+  const watches = [
+    { id: 1, name: "Kids Fun Watch A", price: 999, img: "K1.jpg", category: "kids", discount: isSaleActive ? 0.5 : 0 },
+    { id: 2, name: "Kids Fun Watch B", price: 1099, img: "K-2.jpg", category: "kids", discount: 0 },
+    { id: 3, name: "Kids Sport Watch C", price: 1499, img: "K3.jpg", category: "kids", discount: isSaleActive ? 0.5 : 0 },
+    { id: 4, name: "Kids Sport Watch D", price: 1199, img: "K-4.jpg", category: "kids", discount: 0 },
+    { id: 5, name: "Men Classic Watch A", price: 3499, img: "M1.jpeg", category: "men", discount: isSaleActive ? 0.5 : 0 },
+    { id: 6, name: "Men Classic Watch B", price: 3999, img: "M2.jpeg", category: "men", discount: 0 },
+    { id: 7, name: "Men Sport Watch C", price: 4499, img: "M3.jpeg", category: "men", discount: 0 },
+    { id: 8, name: "Men Sport Watch D", price: 4999, img: "M4.jpeg", category: "men", discount: isSaleActive ? 0.5 : 0 },
+    { id: 9, name: "Women Elegant Watch A", price: 2999, img: "W1.jpeg", category: "women", discount: 0 },
+    { id: 10, name: "Women Elegant Watch B", price: 3399, img: "W2.jpeg", category: "women", discount: isSaleActive ? 0.5 : 0 },
+    { id: 11, name: "Women Classic Watch C", price: 3599, img: "W3.jpeg", category: "women", discount: 0 },
+    { id: 12, name: "Women Classic Watch D", price: 3999, img: "W4.jpeg", category: "women", discount: 0 },
+  ];
+  const kidsRow = document.getElementById('kids-row');
+  const menRow = document.getElementById('men-row');
+  const womenRow = document.getElementById('women-row');
+  const cartIcon = document.getElementById('cart-icon');
+  const cartCount = document.getElementById('cart-count');
+  const cartSidebar = document.getElementById('cart-sidebar');
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartTotalDisplay = document.getElementById('cart-total');
+  const cartDiscountDisplay = document.getElementById('cart-discount');
+  const paymentSection = document.getElementById('payment-section');
+  const paymentForm = document.getElementById('payment-form');
+  const addressModal = document.getElementById('address-modal');
+  const addressForm = document.getElementById('address-form');
+  let cart = [];
+  function renderWatches() {
+    kidsRow.innerHTML = '';
+    menRow.innerHTML = '';
+    womenRow.innerHTML = '';
+    watches.forEach(watch => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <img src="${watch.img}" alt="${watch.name}" class="product-img" />
+        <div class="product-info">
+          <div>
+            <div class="product-name">${watch.name}</div>
+            <div class="product-price">
+              ₹${watch.price.toFixed(0)}${watch.discount > 0 ? ` <span style="color:#b00020; font-weight:700; text-decoration: line-through; font-size:0.9rem;">₹${(watch.price / (1 - watch.discount)).toFixed(0)}</span>` : ''}
+            </div>
+          </div>
+          <button class="btn-add" data-id="${watch.id}">Add to Cart</button>
+        </div>
+      `;
+      if (watch.category === "kids") kidsRow.appendChild(card);
+      else if (watch.category === "men") menRow.appendChild(card);
+      else if (watch.category === "women") womenRow.appendChild(card);
+    });
+  }
+  function updateCart() {
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = '<li>Your cart is empty.</li>';
+      cartTotalDisplay.textContent = 'Total: ₹0.00';
+      cartDiscountDisplay.textContent = '';
+      cartCount.style.display = 'none';
+      paymentSection.style.display = 'none';
+      return;
+    }
+    cartCount.style.display = 'inline-block';
+    cartCount.textContent = cart.reduce((acc, item) => acc + item.qty, 0);
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+    let totalDiscount = 0;
+    cart.forEach(item => {
+      const originalPrice = item.price / (1 - item.discount);
+      const discountedPrice = item.price;
+      const priceForQty = discountedPrice * item.qty;
+      const originalPriceForQty = originalPrice * item.qty;
+      total += priceForQty;
+      totalDiscount += (originalPriceForQty - priceForQty);
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div><strong>${item.name}</strong> x ${item.qty}</div>
+        <div>₹${priceForQty.toFixed(0)}${item.discount > 0 ? ` <span style="color:#b00020; font-weight:700; text-decoration: line-through; font-size:0.8rem;">₹${originalPriceForQty.toFixed(0)}</span>` : ''}</div>
+      `;
+      cartItemsContainer.appendChild(li);
+    });
+    cartTotalDisplay.textContent = `Total: ₹${total.toFixed(0)}`;
+    if(totalDiscount > 0) {
+      cartDiscountDisplay.textContent = `You saved: ₹${totalDiscount.toFixed(0)} on this order!`;
+    } else {
+      cartDiscountDisplay.textContent = '';
+    }
+    paymentSection.style.display = 'block';
+  }
+  document.body.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-add')) {
+      const id = parseInt(e.target.dataset.id);
+      const watch = watches.find(w => w.id === id);
+      if (!watch) return;
+      const cartItem = cart.find(item => item.id === id);
+      if (cartItem) {
+        cartItem.qty++;
+      } else {
+        cart.push({...watch, qty: 1});
+      }
+      updateCart();
+      cartSidebar.classList.add('open');
+    }
+    if (e.target.id === 'cart-icon') {
+      cartSidebar.classList.toggle('open');
+    }
+  });
+  paymentForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    addressModal.classList.add('open');
+  });
+  addressForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(addressForm);
+    const name = formData.get('name').trim();
+    const address = formData.get('address').trim();
+    const pin = formData.get('pin').trim();
+    const phone = formData.get('phone').trim();
+    if (!name || !address || !pin || !phone) {
+      alert('Please fill all required fields correctly.');
+      return;
+    }
+    alert(`Thank you ${name}! Your order will be shipped to:\n${address}\nPIN: ${pin}\nPhone: ${phone}`);
+    cart = [];
+    updateCart();
+    addressModal.classList.remove('open');
+    cartSidebar.classList.remove('open');
+  });
+  renderWatches();
+  updateCart();
+</script>
+</body>
+</html>

@@ -8,37 +8,37 @@ const projectList = [
     title: "Watch Website",
     tech: ["HTML", "CSS", "JavaScript"],
     desc: "Responsive online watch store with product showcase and cart features.",
-    demo: "#",
+    demo: "E-COMM.html",
   },
   {
     title: "Personal Portfolio",
     tech: ["HTML", "CSS", "JS", "Animations"],
     desc: "Interactive portfolio showcasing projects and achievements with smooth animations.",
-    demo: "#",
+    demo: "/Myportfolio.html",
   },
   {
     title: "Password Storage System",
     tech: ["C", "DSA"],
     desc: "Secure password storage using hashing and hash table operations.",
-    demo: "#",
+    demo: "DS-FINAL1.pdf",
   },
   {
     title: "Image Compression",
     tech: ["Linear Algebra", "C"],
     desc: "Compressed images using Rank-Nullity Theorem to save storage efficiently.",
-    demo: "#",
+    demo: "LA-FINAL1.pdf",
   },
   {
     title: "Sales Data Aggregator",
     tech: ["Python"],
     desc: "Processed and analyzed raw sales data to generate actionable insights.",
-    demo: "#",
+    demo: "PY-FINAL1.pdf",
   },
   {
     title: "PixelBoost",
     tech: ["React.js", "HTML", "CSS", "JS"],
     desc: "Startup website under development for creative digital solutions.",
-    demo: "#",
+    demo: "https://vignesh79899.github.io/PixelBoost/",
   },
 ];
 
