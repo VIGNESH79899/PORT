@@ -12,7 +12,7 @@ const CTA = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        Like What You See?
+        Thank you for visiting my portfolio!
       </motion.h2>
       <p className="text-white/90 mb-8 text-lg">
         Download my resume or contact me to discuss collaboration and projects!

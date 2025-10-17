@@ -7,7 +7,7 @@ const coreSkills = [
   { title: "Python", icon: <FaPython size={28} />, tags: ["Python"], color: "border-yellow-400" },
   { title: "JavaScript", icon: <FaJs size={28} />, tags: ["JavaScript"], color: "border-cyan-400" },
   { title: "React.js", icon: <FaReact size={28} />, tags: ["React", "Frontend"], color: "border-blue-400" },
-  { title: "SQL", icon: <FaDatabase size={28} />, tags: ["SQL", "DB"], color: "border-pink-400" },
+  { title: "HTML", icon: <FaDatabase size={28} />, tags: ["Structure"], color: "border-pink-400" },
 ];
 
 const learningSkills = [

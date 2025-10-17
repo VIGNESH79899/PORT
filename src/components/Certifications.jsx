@@ -4,7 +4,7 @@ import { FaAward } from 'react-icons/fa';
 
 const certs = [
   {
-    name: "Power BI Workshop – Office Master",
+    name: "Power BI Workshop - Office Master",
     link: "P.BI.jpg"
   },
   {
