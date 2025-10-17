@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaPython, FaJs, FaJava, FaReact, FaDatabase, FaCuttlefish } from 'react-icons/fa';
+import { FaPython, FaJs, FaJava, FaReact, FaCuttlefish, FaHtml5 } from 'react-icons/fa';
 
 const coreSkills = [
   { title: "C", icon: <FaCuttlefish size={28} />, tags: ["C"], color: "border-teal-400" },
   { title: "Python", icon: <FaPython size={28} />, tags: ["Python"], color: "border-yellow-400" },
   { title: "JavaScript", icon: <FaJs size={28} />, tags: ["JavaScript"], color: "border-cyan-400" },
   { title: "React.js", icon: <FaReact size={28} />, tags: ["React", "Frontend"], color: "border-blue-400" },
-  { title: "HTML", icon: <FaDatabase size={28} />, tags: ["Structure"], color: "border-pink-400" },
+  { title: "HTML", icon: <FaHtml5 size={28} />, tags: ["Structure"], color: "border-pink-400" },
 ];
 
 const learningSkills = [
